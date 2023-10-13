@@ -1,7 +1,7 @@
 import Welcome from "~features/welcome/welcome"
 
 const WelcomePage = () => {
-  return <div></div>
+  return <Welcome />
 }
 
 export default WelcomePage

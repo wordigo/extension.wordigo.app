@@ -1,8 +1,9 @@
 import { type ImperativeMethods, type Option, Select, type SelectProps } from "baseui/select"
+import { Skeleton } from "baseui/skeleton"
 import { useEffect, useRef, useState } from "react"
 import ReactCountryFlag from "react-country-flag"
 
-import { AllCountryLanguages, type ILanguage } from "~constants"
+import { AllCountryLanguages, AllLanguagesWithDetect, type ILanguage } from "~constants"
 
 import { StyledSelectLabel } from "./Common.styles"
 
@@ -11,22 +12,24 @@ export interface ILanguageSelector extends SelectProps {
   className?: string
   defaultValue?: string
   placeholder?: string
+  detectLanguage?: string
   onSelect?: (value: ILanguage) => void
   disabled?: boolean
 }
 
-const LanguageSelector = ({ defaultValue, onSelect, placeholder = "Select a language", ...attr }: ILanguageSelector) => {
+const LanguageSelector = ({ defaultValue, onSelect, detectLanguage, placeholder = "Select a language", overrides, ...attr }: ILanguageSelector) => {
   const [selected, setSelected] = useState<any>()
 
   const controlRef = useRef<ImperativeMethods>(null)
 
+  const computedLanguages = detectLanguage ? AllLanguagesWithDetect : AllCountryLanguages
   const handleSelect = (option: Option) => {
     setSelected(option.value[0])
     onSelect?.(option.value[0])
   }
 
   useEffect(() => {
-    const computedDefaultValue = AllCountryLanguages.find((lang) => lang.code === defaultValue)
+    const computedDefaultValue = computedLanguages.find((lang) => lang.code === (detectLanguage ? AllLanguagesWithDetect[0].code : defaultValue))
     setSelected(computedDefaultValue)
   }, [])
 
@@ -36,13 +39,21 @@ const LanguageSelector = ({ defaultValue, onSelect, placeholder = "Select a lang
     <Select
       controlRef={controlRef}
       size="compact"
-      options={AllCountryLanguages}
+      options={computedLanguages}
       onChange={handleSelect}
       value={selected}
       placeholder={computedPlaceholder}
       labelKey="title"
       valueKey="code"
       multi={false}
+      overrides={{
+        DropdownListItem: {
+          style: ({ $theme }) => ({
+            color: $theme.colors.contentPrimary
+          })
+        },
+        ...overrides
+      }}
       {...attr}
       filterOptions={(options, filterValue) => {
         if (!filterValue) return options
@@ -58,16 +69,22 @@ const LanguageSelector = ({ defaultValue, onSelect, placeholder = "Select a lang
 }
 
 LanguageSelector.Label = ({ option }: any) => {
+  const hasDetectOption = option.code === "DT"
+
   return (
     <StyledSelectLabel>
-      <ReactCountryFlag
-        style={{
-          fontSize: "1em",
-          lineHeight: "1em"
-        }}
-        svg
-        countryCode={option.icon}
-      />
+      {!hasDetectOption ? (
+        <ReactCountryFlag
+          style={{
+            fontSize: "1em",
+            lineHeight: "1em"
+          }}
+          svg
+          countryCode={option.icon}
+        />
+      ) : (
+        <Skeleton width="14px" height="14px" />
+      )}
       {option.name}
     </StyledSelectLabel>
   )

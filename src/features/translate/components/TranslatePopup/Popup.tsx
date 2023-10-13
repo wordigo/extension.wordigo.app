@@ -4,8 +4,7 @@ import { Skeleton } from "baseui/skeleton"
 import { Textarea } from "baseui/textarea"
 import { colors } from "baseui/tokens"
 import { ArrowRightLeft, Settings, X } from "lucide-react"
-import { useEffect, useMemo } from "react"
-import { Fragment } from "react"
+import { Fragment, useEffect, useMemo } from "react"
 import ReactCountryFlag from "react-country-flag"
 import { useMutation } from "react-query"
 
@@ -95,7 +94,27 @@ const TranslatePopup = () => {
                 <TranslatePopup.Loader />
               ) : (
                 <Fragment>
-                  <Textarea rows={5} overrides={{ Root: { style: { borderRadius: "2px" } } }} value={result?.data?.translatedText} readOnly size="compact" clearable clearOnEscape />
+                  <Textarea
+                    rows={5}
+                    overrides={{
+                      InputContainer: { style: ({ $theme }) => ({ background: $theme.name === "dark-theme" ? $theme.colors.black : $theme.colors.white }) },
+                      Root: {
+                        style: {
+                          borderRadius: "2px",
+                          borderWidth: "1px",
+                          ":focus-within": {
+                            boxShadow: "none",
+                            borderColor: "rgb(209 213 219/0.8)"
+                          }
+                        }
+                      }
+                    }}
+                    value={result?.data?.translatedText}
+                    readOnly
+                    size="compact"
+                    clearable
+                    clearOnEscape
+                  />
                   <StyledContentActions>
                     <TranslatePopup.AudioPlayer message={selectedText} targetLanguage={targetLanguage} />
                     <TextCopy text={result?.data?.translatedText} />

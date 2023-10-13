@@ -18,7 +18,7 @@ const AuidoPlayer = ({ message, targetLanguage }: { message: string; targetLangu
     <div>
       <audio src={computedUrl} ref={playerRef} />
       <CTooltip content={getLocalMessage("text_to_speech")}>
-        <Button onClick={textToSpeech} kind="secondary" size="mini">
+        <Button onClick={textToSpeech} kind="tertiary" size="mini">
           <Volume2 size={16} />
         </Button>
       </CTooltip>

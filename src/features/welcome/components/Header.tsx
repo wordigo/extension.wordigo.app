@@ -8,7 +8,7 @@ const CHeader = () => {
     <Header>
       <Progressbar />
       <HeaderLink href="https://wordigo.app/" target="_blank">
-        <img width="48px" src={Logo} />
+        <img width="150px" src={Logo} />
       </HeaderLink>
     </Header>
   )

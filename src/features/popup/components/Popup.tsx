@@ -4,7 +4,7 @@ import { Textarea } from "baseui/textarea"
 import lightLogo from "data-base64:~assets/logo-light.png"
 import { ArrowRightLeft, Settings } from "lucide-react"
 import type { ChangeEventHandler } from "react"
-import { Fragment, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useMutation } from "react-query"
 
 import { sendToBackground } from "@plasmohq/messaging"
@@ -13,7 +13,7 @@ import { TranslateApi } from "~api/translate"
 import CopyTranslatedText from "~components/CopyText"
 import LanguageSelector from "~features/translate/components/LanguageSelector"
 import TranslatePopup from "~features/translate/components/TranslatePopup/Popup"
-import { StyledContentActions, StyledPopupLoader } from "~features/translate/components/TranslatePopup/Popup.styles"
+import { StyledContentActions } from "~features/translate/components/TranslatePopup/Popup.styles"
 import { usePopoverStore } from "~stores/popover"
 import { TARGET_LANGUAGE_STORAGE, TRANSLATE_OPTION_STORAGE } from "~utils/constants"
 import { getLocalMessage } from "~utils/locale"
@@ -21,9 +21,7 @@ import { localStorage } from "~utils/storage"
 
 import "~/styles/main.css"
 
-import { colors } from "baseui/tokens"
-
-import { Card, CardActions, CardContent, CardHeader, CardHeaderContent, CardHeaderContentText } from "./Popup.styles"
+import { Card, CardActions, CardContent, CardHeader, CardHeaderContent, CardHeaderContentText, SelectCustomOverrides, StyledPopupLoader } from "./Popup.styles"
 
 const ExtensionPopup = () => {
   const [value, setValue] = useState("")
@@ -52,8 +50,8 @@ const ExtensionPopup = () => {
         <CardHeaderContent className="flex flex-row items-center w-full justify-center relative">
           <img src={lightLogo} width={100} height={40} alt="Logo" />
           <CardHeaderContentText>
-            <Button onClick={openSettingsPage} kind="secondary" size="mini">
-              <Settings size={14} />
+            <Button onClick={openSettingsPage} overrides={{ Root: { style: { color: "white", ":hover": { background: "rgb(209 213 219/0.8)" } } } }} kind="tertiary" size="mini">
+              <Settings size={16} />
             </Button>
           </CardHeaderContentText>
         </CardHeaderContent>
@@ -61,30 +59,11 @@ const ExtensionPopup = () => {
           <LanguageSelector
             defaultValue={result?.data?.sourceLanguage?.toUpperCase()}
             className="!border-lg w-[200px] !bg-gray-300 !bg-opacity-30 !border-opacity-30 !border-gray-300 !text-white"
-            overrides={{
-              ControlContainer: {
-                style: {
-                  borderRadius: "8px",
-                  // write above tailwindcss classnames to style the component
-                  width: "200px",
-                  height: "40px",
-                  backgroundColor: `rgb(209 213 219)`,
-                  borderColor: colors.gray300,
-                  borderWidth: "1px",
-                  color: "white"
-                }
-              }
-            }}
-            // detectLanguage={getLocalMessage("detect_language")}
-            // providerLanguages
+            overrides={SelectCustomOverrides}
+            detectLanguage={getLocalMessage("detect_language")}
           />
-          <ArrowRightLeft className="!text-gray-300" size={20} />
-          <LanguageSelector
-            defaultValue={targetLanguage}
-            // onSelect={(lang) => setTargetLanguage(lang)}
-            className="!border-lg w-[200px] !bg-gray-300 !bg-opacity-30 !border-opacity-30 !border-gray-300 !text-white"
-            // providerLanguages
-          />
+          <ArrowRightLeft style={{ color: "rgb(209 213 219/0.8)", marginLeft: 15, marginRight: 15 }} size={22} />
+          <LanguageSelector defaultValue={targetLanguage} onSelect={(lang) => setTargetLanguage(lang.code)} overrides={SelectCustomOverrides} />
         </CardActions>
       </CardHeader>
       <CardContent>
@@ -111,17 +90,34 @@ ExtensionPopup.Textarea = ({
 
   return (
     <div style={{ position: "relative", width: "100%" }}>
-      {isLoading ? (
-        <ExtensionPopup.Loader />
-      ) : (
-        <Fragment>
-          <Textarea rows={3} onChange={(event) => onChange(event)} overrides={{ Root: { style: { borderRadius: "2px" } } }} value={value} size="compact" clearOnEscape {...attr} />
-          <StyledContentActions>
-            <TranslatePopup.AudioPlayer message={value} targetLanguage={targetLanguage} />
-            <CopyTranslatedText text={value} />
-          </StyledContentActions>
-        </Fragment>
-      )}
+      <Textarea
+        rows={4}
+        onChange={(event) => onChange(event)}
+        overrides={{
+          InputContainer: { style: ({ $theme }) => ({ background: $theme.name === "dark-theme" ? $theme.colors.black : $theme.colors.white, width: "100%" }) },
+          Root: {
+            style: {
+              width: "100%",
+              borderRadius: "6px",
+              borderWidth: "2px",
+              ":focus-within": {
+                boxShadow: "none",
+                borderColor: "rgb(209 213 219/0.8)"
+              }
+            }
+          }
+        }}
+        resize="vertical"
+        value={value}
+        size="compact"
+        clearOnEscape
+        {...attr}
+      />
+      {isLoading && <ExtensionPopup.Loader />}
+      <StyledContentActions>
+        <TranslatePopup.AudioPlayer message={value} targetLanguage={targetLanguage} />
+        <CopyTranslatedText text={value} />
+      </StyledContentActions>
     </div>
   )
 }

@@ -11,9 +11,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
-    "@mantine/core": "^7.1.2",
-    "@mantine/hooks": "^7.1.2",
-    "@mantine/notifications": "^7.1.2",
     "@plasmohq/messaging": "^0.5.0",
     "@plasmohq/storage": "^1.6.1",
     "@radix-ui/react-portal": "^1.0.3",

@@ -16,7 +16,7 @@ const CopyTranslatedText = ({ text }: { text: string }) => {
 
   return (
     <CTooltip content={copiedStatus ? getLocalMessage("translation_copied") : getLocalMessage("translation_copy")}>
-      <Button onClick={copyTranslatedText} kind="secondary" size="mini">
+      <Button onClick={copyTranslatedText} kind="tertiary" size="mini">
         <Copy size={14} />
       </Button>
     </CTooltip>
