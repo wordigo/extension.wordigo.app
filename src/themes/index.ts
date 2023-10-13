@@ -1,4 +1,4 @@
-import { createLightTheme } from 'baseui';
+import { createLightTheme } from "baseui"
 
 const primitives = {
   // backgroundAccent: '#020817',
@@ -13,6 +13,6 @@ const primitives = {
   // primary700: '#1A56DB',
   // primary800: '#1E429F',
   // primary900: '#233876',
-};
+}
 
-export const CLightTheme = createLightTheme(primitives);
+export const CLightTheme = createLightTheme(primitives)

@@ -2,8 +2,8 @@ import { WORDIGO_JWT_TOKEN_COOKIE } from "~constants"
 import { localStorage } from "~utils/storage"
 
 chrome.runtime.onInstalled.addListener(({ reason }) => {
-  openWelcomePage()
   if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    openWelcomePage()
     return
   }
 })

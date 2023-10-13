@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "baseui/button"
 import { Checkbox } from "baseui/checkbox"
 import { FormControl } from "baseui/form-control"
 import { useEffect, useState } from "react"
@@ -65,9 +64,15 @@ export const SettingsForm = () => {
 
   if (!isLoading)
     return (
-      <form className="gap-y-4" onSubmit={form.handleSubmit(handleSaveChanges)}>
+      <form onChange={form.handleSubmit(handleSaveChanges)}>
         <FormControl label={getLocalMessage("targetLanguage")} caption={getLocalMessage("targetLanguageDesc")}>
-          <LanguageSelector defaultValue={form.getValues("targetLanguage")} onSelect={(value) => form.setValue("targetLanguage", value.code)} />
+          <LanguageSelector
+            defaultValue={form.getValues("targetLanguage")}
+            onSelect={(value) => {
+              form.setValue("targetLanguage", value.code)
+              handleSaveChanges(form.getValues())
+            }}
+          />
         </FormControl>
         <div>
           <StyledFormControl>
@@ -97,9 +102,6 @@ export const SettingsForm = () => {
             </StyledFormGroup>
           </StyledFormControl>
         </div>
-        <Button size="compact" onClick={form.handleSubmit(handleSaveChanges)}>
-          {getLocalMessage("saveChanges")}
-        </Button>
       </form>
     )
 }
