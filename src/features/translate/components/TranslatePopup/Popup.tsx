@@ -116,7 +116,7 @@ const TranslatePopup = () => {
                     clearOnEscape
                   />
                   <StyledContentActions>
-                    <TranslatePopup.AudioPlayer message={selectedText} targetLanguage={targetLanguage} />
+                    <AuidoPlayer message={selectedText} targetLanguage={targetLanguage} />
                     <TextCopy text={result?.data?.translatedText} />
                   </StyledContentActions>
                 </Fragment>

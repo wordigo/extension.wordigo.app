@@ -1,8 +1,8 @@
-import { WORDIGO_JWT_TOKEN_COOKIE } from "~constants"
 import type { PlasmoCSConfig } from "plasmo"
 import { Fragment, useEffect, useState } from "react"
 import { Client as Styletron } from "styletron-engine-atomic"
 
+import { WORDIGO_JWT_TOKEN_COOKIE } from "~constants"
 import FloatingButton from "~features/translate/components/FloatingButton/Button"
 import TranslatePopup from "~features/translate/components/TranslatePopup/Popup"
 import Provider from "~providers"
@@ -11,6 +11,8 @@ import { useDictionaryStore } from "~stores/dictionary"
 import { usePopoverStore } from "~stores/popover"
 import { TARGET_LANGUAGE_STORAGE, TRANSLATE_OPTION_STORAGE, translateOptionEnums } from "~utils/constants"
 import { localStorage } from "~utils/storage"
+
+import { TextToSpeechProvider } from "../constants/textToSpeech"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -81,9 +83,6 @@ const Translate = () => {
 
   return (
     <Fragment>
-      <head>
-        <meta name="referrer" content="no-referrer" />
-      </head>
       {isFloating && <FloatingButton />}
       {isPopup && <TranslatePopup />}
     </Fragment>
@@ -91,9 +90,9 @@ const Translate = () => {
 }
 
 Translate.Layout = () => {
-  const { getDictionaries } = useDictionaryStore()
+  const { dictionaries, getDictionaries } = useDictionaryStore()
   const [mounted, setMounted] = useState(false)
-  const { setTargetLanguage, setTranslateOption } = usePopoverStore()
+  const { targetLanguage, setTargetLanguage, setTranslateOption } = usePopoverStore()
   const { setToken } = useAuthStore()
 
   localStorage.watch({
@@ -118,14 +117,27 @@ Translate.Layout = () => {
     setTranslateOption(translateOption)
     setMounted(true)
 
-    if (tokenStorage) void getDictionaries()
+    if (tokenStorage) {
+      const dictionariesResponse = await getDictionaries()
+      if (!dictionariesResponse) {
+        localStorage.remove(WORDIGO_JWT_TOKEN_COOKIE)
+      }
+    }
   }
 
   useEffect(() => {
     void getStorages()
   }, [])
 
-  return <Provider engine={engine}>{mounted && <Translate />}</Provider>
+  return (
+    <Provider engine={engine}>
+      {mounted && (
+        <TextToSpeechProvider targetLanguage={targetLanguage}>
+          <Translate />
+        </TextToSpeechProvider>
+      )}
+    </Provider>
+  )
 }
 
 export default Translate.Layout

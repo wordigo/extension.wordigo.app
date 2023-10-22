@@ -9,6 +9,8 @@ const AuidoPlayer = ({ message, targetLanguage }: { message: string; targetLangu
   const playerRef = useRef<HTMLAudioElement>()
 
   const textToSpeech = () => {
+    console.log("tests")
+
     if (message) void playerRef?.current?.play()
   }
 
@@ -16,7 +18,7 @@ const AuidoPlayer = ({ message, targetLanguage }: { message: string; targetLangu
 
   return (
     <div>
-      <audio src={computedUrl} ref={playerRef} />
+      <audio rel="noreferrer" src={computedUrl} ref={playerRef} />
       <CTooltip content={getLocalMessage("text_to_speech")}>
         <Button onClick={textToSpeech} kind="tertiary" size="mini">
           <Volume2 size={16} />

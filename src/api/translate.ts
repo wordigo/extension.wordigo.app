@@ -17,26 +17,72 @@ export const TranslateApi = async (params: TranslateParams): Promise<BaseRespons
   }
 }
 
-export const blobToDataURL = (blob) => {
-  return new Promise((resolve) => {
+function blobToBase64(blob: Blob) {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    reader.onload = () => {
-      resolve(reader.result)
-    }
+    reader.onloadend = () => resolve(reader.result)
+    reader.onerror = reject
     reader.readAsDataURL(blob)
   })
 }
-
 export type TextToSpeechParams = { text: string; phonetic?: string }
 
 export const TextToSpeechApi = async ({ text, phonetic = "en-US" }: TextToSpeechParams): Promise<any> => {
-  const res = await fetch(`https://translate.googleapis.com/translate_tts?client=gtx&tl=${phonetic}&q=${encodeURIComponent(text)}`, {
-    credentials: "same-origin",
-    mode: "no-cors"
+  const res = await fetch(`https://translate.googleapis.com/translate_tts?client=gtx&tl=${phonetic}&ie=UTF-8&q=${encodeURIComponent(text)}`, {
+    referrerPolicy: "no-referrer",
+    headers: {
+      "Content-Type": "audio/mpeg"
+    },
+    mode: "no-cors",
+    redirect: "follow"
   })
+  console.log(res)
+
   const blob = await res.blob()
+  console.log(blob)
 
-  const dataURL = await blobToDataURL(blob)
+  const base64 = await blobToBase64(blob)
 
-  return dataURL
+  return base64
+}
+
+export async function fetchAudioAndConvertToBase64(phonetic, text) {
+  try {
+    const res = await fetch(`https://translate.googleapis.com/translate_tts?client=gtx&tl=${phonetic}&ie=UTF-8&q=${encodeURIComponent(text)}`, {
+      referrerPolicy: "no-referrer",
+      headers: {
+        "Content-Type": "audio/mpeg"
+      },
+      mode: "no-cors"
+    })
+
+    console.log("response", res)
+
+    // if (!res.ok) {
+    //   throw new Error("Network response was not ok")
+    // }
+
+    const blob = await res.blob()
+
+    console.log("blob", blob)
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = function () {
+        // Base64 Audio
+        const base64Audio = reader.result.split(",")[1]
+
+        console.log(reader.result)
+
+        // Play the audio
+        const audio = new Audio(`data:audio/mpeg;base64,${base64Audio}`)
+        audio.play()
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  } catch (error) {
+    console.error("Fetch error:", error)
+    return null
+  }
 }
