@@ -1,26 +1,20 @@
 import { Button } from "baseui/button"
 import { Volume2 } from "lucide-react"
-import { useRef } from "react"
 
 import CTooltip from "~components/CTooltip"
+import { useTextToSpeech } from "~hooks/textToSpeech"
 import { getLocalMessage } from "~utils/locale"
 
-const AuidoPlayer = ({ message, targetLanguage }: { message: string; targetLanguage: string }) => {
-  const playerRef = useRef<HTMLAudioElement>()
-
-  const textToSpeech = () => {
-    console.log("tests")
-
-    if (message) void playerRef?.current?.play()
+const AuidoPlayer = ({ message }: { message: string }) => {
+  const { textToSpeech } = useTextToSpeech()
+  const handleTextToSpeech = () => {
+    void textToSpeech(message)
   }
-
-  const computedUrl = `https://translate.googleapis.com/translate_tts?client=gtx&tl=${targetLanguage}&q=${encodeURIComponent(message)}`
 
   return (
     <div>
-      <audio rel="noreferrer" src={computedUrl} ref={playerRef} />
       <CTooltip content={getLocalMessage("text_to_speech")}>
-        <Button onClick={textToSpeech} kind="tertiary" size="mini">
+        <Button onClick={handleTextToSpeech} kind="tertiary" size="mini">
           <Volume2 size={16} />
         </Button>
       </CTooltip>

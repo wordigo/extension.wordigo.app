@@ -12,8 +12,6 @@ import { usePopoverStore } from "~stores/popover"
 import { TARGET_LANGUAGE_STORAGE, TRANSLATE_OPTION_STORAGE, translateOptionEnums } from "~utils/constants"
 import { localStorage } from "~utils/storage"
 
-import { TextToSpeechProvider } from "../constants/textToSpeech"
-
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
   all_frames: true
@@ -129,15 +127,7 @@ Translate.Layout = () => {
     void getStorages()
   }, [])
 
-  return (
-    <Provider engine={engine}>
-      {mounted && (
-        <TextToSpeechProvider targetLanguage={targetLanguage}>
-          <Translate />
-        </TextToSpeechProvider>
-      )}
-    </Provider>
-  )
+  return <Provider engine={engine}>{mounted && <Translate />}</Provider>
 }
 
 export default Translate.Layout

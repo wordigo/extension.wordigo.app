@@ -1,16 +1,15 @@
 import { type ButtonProps } from "baseui/button"
 import { FloatingRouteMarker } from "baseui/map-marker"
-import { BookMarked, Languages, MoreVertical } from "lucide-react"
+import { BookMarked, Languages, MoreVertical, Volume2 } from "lucide-react"
 import { useRef } from "react"
 
 import { sendToBackground } from "@plasmohq/messaging"
 
-import { useTextToSpeech } from "~constants/textToSpeech"
+import { useTextToSpeech } from "~hooks/textToSpeech"
 import { usePopoverStore } from "~stores/popover"
 import { getPopupCordinate } from "~utils"
 import { getLocalMessage } from "~utils/locale"
 
-import AuidoPlayer from "../AudioPlayer"
 import Logo from "../Logo"
 import { MotionCard, StyledButtonGroup, StyledContainer, StyledFloatingButton, StyledLogoContainer } from "./Button.styles"
 
@@ -62,11 +61,10 @@ const Floating = () => {
                   <Languages size={14} />
                   {getLocalMessage("translate")}
                 </Floating.Button>
-                {/* <Floating.Button onClick={handleTextToSpeech}>
+                <Floating.Button onClick={handleTextToSpeech}>
                   <Volume2 size={15} />
                   {getLocalMessage("voice")}
-                </Floating.Button> */}
-                <AuidoPlayer message={selectedText} targetLanguage={targetLanguage} />
+                </Floating.Button>
                 <Floating.Button>
                   <BookMarked size={14} />
                   {getLocalMessage("add")}

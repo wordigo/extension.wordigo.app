@@ -115,7 +115,7 @@ ExtensionPopup.Textarea = ({
       />
       {isLoading && <ExtensionPopup.Loader />}
       <StyledContentActions>
-        <TranslatePopup.AudioPlayer message={value} targetLanguage={targetLanguage} />
+        <TranslatePopup.AudioPlayer message={value} />
         <CopyTranslatedText text={value} />
       </StyledContentActions>
     </div>
