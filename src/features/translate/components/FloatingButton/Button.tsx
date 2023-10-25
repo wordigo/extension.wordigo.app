@@ -35,6 +35,10 @@ const Floating = () => {
     opeendSettings && setPopup(false)
   }
 
+  const handleLandingNavigate = () => {
+    window.open("https://wordigo.app/", "_blank")
+  }
+
   return (
     <div>
       <MotionCard
@@ -53,7 +57,7 @@ const Floating = () => {
           overrides={{ Root: { style: { background: "transparent", padding: "0px" } } }}
           label={
             <StyledContainer>
-              <StyledLogoContainer>
+              <StyledLogoContainer onClick={handleLandingNavigate}>
                 <Logo />
               </StyledLogoContainer>
               <StyledButtonGroup>
@@ -70,7 +74,7 @@ const Floating = () => {
                   {getLocalMessage("add")}
                 </Floating.Button>
               </StyledButtonGroup>
-              <Floating.Button onClick={openSettingsPage}>
+              <Floating.Button disabled onClick={openSettingsPage}>
                 <MoreVertical size={16} />
               </Floating.Button>
             </StyledContainer>

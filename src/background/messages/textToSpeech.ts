@@ -14,7 +14,7 @@ export type RequestResponse = unknown
 
 const handler: PlasmoMessaging.MessageHandler<RequestBody, RequestResponse> = async (req, res) => {
   try {
-    const response = await fetch(`https://translate.googleapis.com/translate_tts?client=gtx&tl=${req.body.phonetic}&ie=UTF-8&q=${encodeURIComponent(req.body.text)}`, {
+    const response = await fetch(`https://translate.googleapis.com/translate_tts?client=gtx&tl=EN&ie=UTF-8&q=${encodeURIComponent(req.body.text)}`, {
       referrerPolicy: "no-referrer",
       mode: "no-cors"
     })

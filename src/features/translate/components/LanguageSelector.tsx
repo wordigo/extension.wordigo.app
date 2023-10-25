@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import ReactCountryFlag from "react-country-flag"
 
 import { AllCountryLanguages, AllLanguagesWithDetect, type ILanguage } from "~constants"
+import { getLocalMessage } from "~utils/locale"
 
 import { StyledSelectLabel } from "./Common.styles"
 
@@ -17,7 +18,7 @@ export interface ILanguageSelector extends SelectProps {
   disabled?: boolean
 }
 
-const LanguageSelector = ({ defaultValue, onSelect, detectLanguage, placeholder = "Select a language", overrides, ...attr }: ILanguageSelector) => {
+const LanguageSelector = ({ defaultValue, onSelect, detectLanguage, placeholder, overrides, ...attr }: ILanguageSelector) => {
   const [selected, setSelected] = useState<any>()
 
   const controlRef = useRef<ImperativeMethods>(null)
@@ -33,7 +34,7 @@ const LanguageSelector = ({ defaultValue, onSelect, detectLanguage, placeholder 
     setSelected(computedDefaultValue)
   }, [])
 
-  const computedPlaceholder = !selected?.value && selected?.name ? "" : placeholder
+  const computedPlaceholder = !selected?.value && selected?.name ? "" : getLocalMessage("select_language")
 
   return (
     <Select

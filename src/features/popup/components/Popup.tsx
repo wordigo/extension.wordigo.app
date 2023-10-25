@@ -44,11 +44,15 @@ const ExtensionPopup = () => {
     return () => clearTimeout(typingTimeout)
   }, [value, targetLanguage])
 
+  const handleLandingNavigate = () => {
+    window.open("https://wordigo.app/", "_blank")
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardHeaderContent className="flex flex-row items-center w-full justify-center relative">
-          <img src={lightLogo} width={100} height={40} alt="Logo" />
+        <CardHeaderContent>
+          <img onClick={handleLandingNavigate} style={{ cursor: "pointer" }} src={lightLogo} width={100} height={40} alt="Logo" />
           <CardHeaderContentText>
             <Button onClick={openSettingsPage} overrides={{ Root: { style: { color: "white", ":hover": { background: "rgb(209 213 219/0.8)" } } } }} kind="tertiary" size="mini">
               <Settings size={16} />
@@ -56,12 +60,7 @@ const ExtensionPopup = () => {
           </CardHeaderContentText>
         </CardHeaderContent>
         <CardActions>
-          <LanguageSelector
-            defaultValue={result?.data?.sourceLanguage?.toUpperCase()}
-            className="!border-lg w-[200px] !bg-gray-300 !bg-opacity-30 !border-opacity-30 !border-gray-300 !text-white"
-            overrides={SelectCustomOverrides}
-            detectLanguage={getLocalMessage("detect_language")}
-          />
+          <LanguageSelector defaultValue={result?.data?.sourceLanguage?.toUpperCase()} overrides={SelectCustomOverrides} detectLanguage={getLocalMessage("detect_language")} />
           <ArrowRightLeft style={{ color: "rgb(209 213 219/0.8)", marginLeft: 15, marginRight: 15 }} size={22} />
           <LanguageSelector defaultValue={targetLanguage} onSelect={(lang) => setTargetLanguage(lang.code)} overrides={SelectCustomOverrides} />
         </CardActions>

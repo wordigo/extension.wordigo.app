@@ -10,7 +10,8 @@ const CTooltip = ({ children, content }: PropsWithChildren<{ content: string }>)
           style: ({ $theme }) => ({
             zIndex: 50,
             backgroundColor: $theme.name === "dark-theme" ? $theme.colors.backgroundPrimary : $theme.colors.white,
-            boxShadow: $theme.lighting.shadow600
+            boxShadow: $theme.lighting.shadow600,
+            transition: "opacity 0.3s ease-in-out" // transition added
           })
         },
         Body: {
@@ -21,6 +22,7 @@ const CTooltip = ({ children, content }: PropsWithChildren<{ content: string }>)
             backgroundColor: $theme.name === "dark-theme" ? $theme.colors.backgroundPrimary : $theme.colors.white,
             boxShadow: $theme.name === "dark-theme" ? $theme.lighting.shadow600 : $theme.lighting.shadow200,
             display: "inline-block"
+            // transformOrigin: "top center" // origin for the transform added
           })
         },
         Inner: {
@@ -38,7 +40,8 @@ const CTooltip = ({ children, content }: PropsWithChildren<{ content: string }>)
             fontWeight: 500,
             textAlign: "center",
             display: "flex",
-            color: $theme.colors.contentPrimary
+            color: $theme.colors.contentPrimary,
+            transition: "opacity 0.3s ease-in-out" // transition added
           })
         }
       }}
