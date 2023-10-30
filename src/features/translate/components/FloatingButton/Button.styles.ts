@@ -1,4 +1,4 @@
-import { styled } from "baseui";
+import { styled } from "baseui"
 import { Button, type ButtonProps } from "baseui/button"
 import { colors } from "baseui/tokens"
 import { motion } from "framer-motion"
@@ -29,7 +29,7 @@ export const StyledLogoContainer = styled("div", ({ $theme }) => ({
   padding: "1px",
   transition: "all 0.2s ease",
   ":hover": {
-    backgroundColor: $theme.colors.primaryB,
+    backgroundColor: $theme.colors.primaryB
   }
 }))
 
@@ -38,7 +38,7 @@ export const StyledButtonGroup = styled("div", ({ $theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  borderRight: `1px solid ${$theme.name === "dark-theme" ? $theme.colors.backgroundTertiary : $theme.colors.backgroundPrimary}`,
+  borderRight: `1px solid ${$theme.name === "dark-theme" ? $theme.colors.backgroundTertiary : $theme.colors.backgroundPrimary}`
 }))
 
 export const StyledFloatingButton = styled(Button<ComponentType<ButtonProps>>, ({ $theme }) => ({

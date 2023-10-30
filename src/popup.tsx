@@ -5,15 +5,14 @@ import Provider from "~providers"
 
 export const getShadowHostId = () => "wordigo-translate-content"
 
-
 const engine = new Styletron({
-  prefix: "wordigo-",
+  prefix: "wordigo-"
 })
 
 const Popup = () => {
   return (
     <Provider engine={engine}>
-     <TranslatePopup/>
+      <TranslatePopup />
     </Provider>
   )
 }

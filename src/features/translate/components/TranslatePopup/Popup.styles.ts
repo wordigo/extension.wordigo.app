@@ -6,7 +6,13 @@ import type { ComponentType } from "react"
 
 import Logo from "../Logo"
 
-export const StyledContainer = styled(motion.div, ({ $theme }) => ({
+export const MotionCard = styled(motion.div, () => ({
+  position: "absolute",
+  cursor: "pointer",
+  zIndex: 50
+}))
+
+export const StyledContainer = styled("div", ({ $theme }) => ({
   border: `1px solid ${colors.gray200}`,
   boxShadow: $theme.name === "dark-theme" ? $theme.lighting.shadow600 : $theme.lighting.shadow400,
   borderRadius: $theme.sizing.scale100,
@@ -23,7 +29,8 @@ export const StyledContainer = styled(motion.div, ({ $theme }) => ({
   paddingTop: $theme.sizing.scale300,
   paddingBottom: $theme.sizing.scale100,
   paddingLeft: $theme.sizing.scale400,
-  paddingRight: $theme.sizing.scale400
+  paddingRight: $theme.sizing.scale400,
+  width: "100% !important"
 }))
 
 export const StyledContainerHeader = styled("div", ({ $theme }) => ({

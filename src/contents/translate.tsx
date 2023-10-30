@@ -1,3 +1,4 @@
+import { autoUpdate, flip, inline, shift, useDismiss, useFloating, useInteractions } from "@floating-ui/react"
 import type { PlasmoCSConfig } from "plasmo"
 import { Fragment, useEffect, useState } from "react"
 import { Client as Styletron } from "styletron-engine-atomic"
@@ -30,59 +31,103 @@ const engine = new Styletron({
 
 const Translate = () => {
   const translatorShadowContent = document.querySelector("#wordigo-translate-content")
+  const [isOpen, setIsOpen] = useState(false)
 
-  const { setCordinate, isFloating, isPopup, setFloating, setPopup, setSelectedText, translateOption } = usePopoverStore()
+  const { isFloating, selectedText, isPopup, setFloating, setPopup, setSelectedText, translateOption } = usePopoverStore()
 
-  const handleMouseUp = (event) => {
-    const tag = event?.target?.tagName
+  const { refs, floatingStyles, context } = useFloating({
+    placement: "bottom",
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    middleware: [inline(), flip(), shift()],
+    whileElementsMounted: autoUpdate
+  })
 
-    const targetElement = event.target as HTMLElement
-    const popupContainer = document.querySelector("#el-popup-container")
-    const rootTranslatorContainer = document.querySelector<HTMLElement>("#el-translate-container")
+  const dismiss = useDismiss(context)
 
-    if (
-      popupContainer?.contains(targetElement) ||
-      translatorShadowContent?.contains(targetElement) ||
-      rootTranslatorContainer?.contains(targetElement) ||
-      tag === "INPUT" ||
-      tag === "VIDEO" ||
-      tag === "TEXTAREA"
-    )
-      return
-
-    const selectedText = window.getSelection().toString()?.trim()
-
-    if (selectedText !== "") {
-      setSelectedText(selectedText)
-
-      const { pageX: x, pageY: y } = event
-
-      setCordinate({ x, y })
-
-      if (translateOption === translateOptionEnums.translate_button) {
-        setFloating(true)
-        setPopup(false)
-      } else {
-        setPopup(true)
-      }
-    } else {
-      setFloating(false)
-      setPopup(false)
-    }
-  }
+  const { getFloatingProps } = useInteractions([dismiss])
 
   useEffect(() => {
-    document.addEventListener("mouseup", handleMouseUp)
+    function handleMouseUp(event: MouseEvent) {
+      const targetElement = event.target as HTMLElement
+      const popupContainer = document.querySelector("#el-popup-container")
+      const rootTranslatorContainer = document.querySelector<HTMLElement>("#el-translate-container")
+
+      const tag = targetElement?.tagName
+
+      if (refs.floating.current?.contains(event.target as Element | null)) {
+        return
+      }
+
+      if (
+        popupContainer?.contains(targetElement) ||
+        translatorShadowContent?.contains(targetElement) ||
+        rootTranslatorContainer?.contains(targetElement) ||
+        tag === "INPUT" ||
+        tag === "VIDEO" ||
+        tag === "TEXTAREA"
+      )
+        return
+
+      setTimeout(() => {
+        const selection = window.getSelection()
+        const range = typeof selection?.rangeCount === "number" && selection.rangeCount > 0 ? selection.getRangeAt(0) : null
+
+        if (selection?.isCollapsed) {
+          setIsOpen(false)
+          return
+        }
+
+        const selectedText = selection?.toString()
+
+        if (selectedText) {
+          setSelectedText(selectedText)
+        }
+
+        if (range) {
+          refs.setReference({
+            getBoundingClientRect: () => range.getBoundingClientRect(),
+            getClientRects: () => range.getClientRects()
+          })
+          if (translateOption === translateOptionEnums.translate_button) {
+            setFloating(true)
+            setPopup(false)
+          } else {
+            setPopup(true)
+          }
+          setIsOpen(true)
+        } else {
+          setIsOpen(false)
+        }
+      })
+    }
+
+    function handleMouseDown(event: MouseEvent) {
+      if (refs.floating.current?.contains(event.target as Element | null)) {
+        return
+      }
+
+      if (window.getSelection()?.isCollapsed || isFloating || isPopup) {
+        setIsOpen(false)
+        setFloating(false)
+        setPopup(false)
+      }
+    }
+
+    window.addEventListener("mouseup", handleMouseUp)
+    window.addEventListener("mousedown", handleMouseDown)
 
     return () => {
-      document.removeEventListener("mouseup", handleMouseUp)
+      window.removeEventListener("mouseup", handleMouseUp)
+      window.removeEventListener("mousedown", handleMouseDown)
     }
-  }, [])
+  }, [refs])
 
   return (
     <Fragment>
-      {isFloating && <FloatingButton />}
-      {isPopup && <TranslatePopup />}
+      {isOpen &&
+        ((isFloating && <FloatingButton style={floatingStyles} {...getFloatingProps()} ref={refs.setFloating} />) ||
+          (isPopup && <TranslatePopup style={floatingStyles} {...getFloatingProps()} ref={refs.setFloating} />))}
     </Fragment>
   )
 }

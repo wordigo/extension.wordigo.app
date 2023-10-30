@@ -1,6 +1,6 @@
-const Logo = ({ className }: { className?: string }) => {
+const Logo = ({ className, onClick }: { className?: string; onClick?: any }) => {
   return (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="none" viewBox="0 0 96 96">
+    <svg className={className} onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="none" viewBox="0 0 96 96">
       <path
         fill="url(#paint0_linear_1_77)"
         fillRule="evenodd"

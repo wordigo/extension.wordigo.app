@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form"
 import * as z from "zod"
 
 import CSkeleton from "~components/CSkeleton"
+import { StyledSelectLabel } from "~features/translate/components/Common.styles"
 import LanguageSelector from "~features/translate/components/LanguageSelector"
 import { getLocalMessage, getUILanguage } from "~utils/locale"
 import { localStorage } from "~utils/storage"
@@ -65,7 +66,10 @@ const ApparanceForm = () => {
             options={[{ id: "Inter" }, { id: "Manrope" }, { id: "System" }]}
             labelKey="id"
             value={[{ id: "Inter" }]}
+            searchable={false}
             valueKey="color"
+            getOptionLabel={({ option }) => <StyledSelectLabel>{option.id}</StyledSelectLabel>}
+
             // onChange={({value}) => form.setValue("font",value)}
             // value={value}
           />
