@@ -1,16 +1,16 @@
 import { styled } from "baseui"
-import { colors } from "baseui/tokens"
 
 export const StyledSelectContainer = styled("div", ({ $theme }) => ({
   position: "absolute",
-  bottom: "-140px",
-  right: 0,
+  marginTop: "6px",
   display: "flex",
   flexDirection: "column",
   alignItems: "start",
   width: "115px",
-  border: `0.5px solid ${colors.gray200}`,
-  borderRadius: $theme.sizing.scale100
+  borderRadius: $theme.sizing.scale100,
+  backgroundColor: $theme.colors.backgroundPrimary,
+  transition: "all 0.3s ease",
+  ...$theme.borders.border400
 }))
 
 export const StyledSelectButton = styled("div", ({ $theme }) => ({
@@ -19,10 +19,13 @@ export const StyledSelectButton = styled("div", ({ $theme }) => ({
   alignItems: "center",
   justifyContent: "space-between",
   height: $theme.sizing.scale800,
-  backgroundColor: colors.white,
-  borderBottom: `0.5px solid ${colors.gray200}`,
+  backgroundColor: $theme.colors.backgroundPrimary,
   paddingLeft: $theme.sizing.scale200,
   fontSize: $theme.sizing.scale500,
-  color: colors.gray500,
-  width: "100%"
+  color: $theme.colors.contentPrimary,
+  width: "100%",
+  ...$theme.borders.border400,
+  borderTopWidth: "0 !important",
+  borderLeftWidth: "0 !important",
+  borderRightWidth: "0 !important"
 }))

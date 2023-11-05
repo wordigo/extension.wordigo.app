@@ -14,6 +14,9 @@
   "apparanceDesciption": {
     "message": "Uygulamanın görünümünü özelleştirin. Otomatik olarak gece ve gündüz temaları arasında geçiş yapın."
   },
+  "select_language_required": {
+    "message": "Lütfen bir dil seçin."
+  },
   "appearance": {
     "message": "Görünüm"
   },

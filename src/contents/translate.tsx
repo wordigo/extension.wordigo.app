@@ -33,7 +33,7 @@ const Translate = () => {
   const translatorShadowContent = document.querySelector("#wordigo-translate-content")
   const [isOpen, setIsOpen] = useState(false)
 
-  const { isFloating, selectedText, isPopup, setFloating, setPopup, setSelectedText, translateOption, testRef } = usePopoverStore()
+  const { isFloating, selectedText, isPopup, setFloating, setPopup, setSelectedText, translateOption } = usePopoverStore()
 
   const { refs, floatingStyles, context } = useFloating({
     placement: "bottom",
@@ -54,7 +54,6 @@ const Translate = () => {
       const rootTranslatorContainer = document.querySelector<HTMLElement>("#el-translate-container")
 
       const tag = targetElement?.tagName
-      console.log("testref", testRef)
 
       if (
         popupContainer?.contains(targetElement) ||
@@ -80,6 +79,11 @@ const Translate = () => {
         }
 
         const selectedText = selection?.toString()
+
+        if (selectedText?.trim() === "") {
+          setIsOpen(false)
+          return
+        }
 
         if (selectedText) {
           setSelectedText(selectedText)

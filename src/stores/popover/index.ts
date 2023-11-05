@@ -1,9 +1,6 @@
 import { create } from "zustand"
 
 export interface IPopoverStore {
-  testRef?: any
-  setTestRef: (ref: any) => void
-
   isFloating: boolean
   isPopup: boolean
   selectedText: string
@@ -25,9 +22,6 @@ export const usePopoverStore = create<IPopoverStore>((set) => ({
   sourceLanguage: "",
   translateOption: "",
   targetLanguage: "",
-
-  testRef: null,
-  setTestRef: (ref) => set({ testRef: ref }),
 
   setFloating: (floating) => set({ isFloating: floating }),
   setPopup: (popup) => set({ isPopup: popup }),
