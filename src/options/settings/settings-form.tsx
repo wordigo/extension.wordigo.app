@@ -65,7 +65,7 @@ export const SettingsForm = () => {
   if (!isLoading)
     return (
       <form onChange={form.handleSubmit(handleSaveChanges)}>
-        <FormControl label={getLocalMessage("targetLanguage")} caption={getLocalMessage("targetLanguageDesc")}>
+        <FormControl label={getLocalMessage("nativeLanguage")} caption={getLocalMessage("nativeLanguageDesc")}>
           <LanguageSelector
             defaultValue={form.getValues("targetLanguage")}
             onSelect={(value) => {

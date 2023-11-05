@@ -28,7 +28,9 @@ export const useTextToSpeech = (): TextToSpeechResult => {
         }
       })
 
-      const audio = new Audio(`data:audio/mp3;base64,${audioBase64}`)
+      const audio = new Audio()
+      audio.crossOrigin = "anonymous"
+      audio.src = `data:audio/mp3;base64,${audioBase64}`
       audio.play()
     } catch (error) {
       console.error("Error:", error)

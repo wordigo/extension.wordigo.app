@@ -115,6 +115,14 @@
     "description": "Popup message.",
     "message": "You can set the language in which the texts you will translate will be translated."
   },
+  "nativeLanguage": {
+    "description": "Native language",
+    "message": "Native Language"
+  },
+  "nativeLanguageDesc": {
+    "description": "Native language description",
+    "message": "You can set the original language of the texts you will translate."
+  },
   "translate_placeholder": {
     "message": "Type the text you want to translate."
   },

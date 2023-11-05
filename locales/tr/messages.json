@@ -109,11 +109,19 @@
   },
   "targetLanguage": {
     "description": "Pop-up mesajı.",
-    "message": "Hedef Dil"
+    "message": "Ana Dil"
   },
   "targetLanguageDesc": {
     "description": "Pop-up mesajı.",
     "message": "Çevireceğiniz metinlerin çevrileceği dili ayarlayabilirsiniz."
+  },
+  "nativeLanguage": {
+    "description": "Native language",
+    "message": "Ana Dil"
+  },
+  "nativeLanguageDesc": {
+    "description": "Native language description",
+    "message": "Çevireceğiniz metinlerin orijinal dilini ayarlayabilirsiniz."
   },
   "translate_placeholder": {
     "message": "Çevirmek istediğiniz metni yazın."

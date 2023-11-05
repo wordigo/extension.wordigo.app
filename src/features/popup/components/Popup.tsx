@@ -12,7 +12,6 @@ import { sendToBackground } from "@plasmohq/messaging"
 import { TranslateApi } from "~api/translate"
 import CopyTranslatedText from "~components/CopyText"
 import LanguageSelector from "~features/translate/components/LanguageSelector"
-import TranslatePopup from "~features/translate/components/TranslatePopup/Popup"
 import { StyledContentActions } from "~features/translate/components/TranslatePopup/Popup.styles"
 import { usePopoverStore } from "~stores/popover"
 import { TARGET_LANGUAGE_STORAGE, TRANSLATE_OPTION_STORAGE } from "~utils/constants"
@@ -20,6 +19,8 @@ import { getLocalMessage } from "~utils/locale"
 import { localStorage } from "~utils/storage"
 
 import "~/styles/main.css"
+
+import AuidoPlayer from "~features/translate/components/AudioPlayer"
 
 import { Card, CardActions, CardContent, CardHeader, CardHeaderContent, CardHeaderContentText, SelectCustomOverrides, StyledPopupLoader } from "./Popup.styles"
 
@@ -106,7 +107,6 @@ ExtensionPopup.Textarea = ({
             }
           }
         }}
-        resize="vertical"
         value={value}
         size="compact"
         clearOnEscape
@@ -114,7 +114,7 @@ ExtensionPopup.Textarea = ({
       />
       {isLoading && <ExtensionPopup.Loader />}
       <StyledContentActions>
-        <TranslatePopup.AudioPlayer message={value} />
+        <AuidoPlayer message={value} />
         <CopyTranslatedText text={value} />
       </StyledContentActions>
     </div>

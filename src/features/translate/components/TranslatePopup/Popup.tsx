@@ -36,6 +36,7 @@ import {
 
 const TranslatePopup = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div">>(({ style }, ref) => {
   const { selectedText, targetLanguage, setPopup } = usePopoverStore()
+
   const { mutate: handleTranslate, isLoading, data: result } = useMutation(TranslateApi)
 
   const getSourceLanguageFlag = useMemo(() => AllCountryLanguages.find((lang) => lang.code === (result?.data?.sourceLanguage || "").toUpperCase()), [result?.data?.sourceLanguage])

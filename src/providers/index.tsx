@@ -1,4 +1,5 @@
 import { BaseProvider, DarkTheme } from "baseui"
+import { SnackbarProvider } from "baseui/snackbar"
 import type { PropsWithChildren } from "react"
 import { useEffect, useState } from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
@@ -36,8 +37,10 @@ const Provider = ({ children, engine }: PropsWithChildren<{ engine: Styletron }>
     return (
       <StyletronProvider value={engine}>
         <BaseProvider overrides={{ AppContainer: { style: { height: "100%" } } }} theme={theme === "dark" ? DarkTheme : CLightTheme}>
-          <Toaster />
-          <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+          <SnackbarProvider>
+            <Toaster />
+            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+          </SnackbarProvider>
         </BaseProvider>
       </StyletronProvider>
     )

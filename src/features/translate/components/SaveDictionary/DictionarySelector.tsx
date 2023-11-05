@@ -1,8 +1,7 @@
+import { useFloating, useHover, useInteractions } from "@floating-ui/react"
 import { Button } from "baseui/button"
-import { StatefulPopover } from "baseui/popover"
 import { ChevronDown } from "lucide-react"
-import { useEffect } from "react"
-import React from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { toast } from "react-hot-toast/headless"
 import { useMutation } from "react-query"
 
@@ -18,8 +17,9 @@ import { getLocalMessage } from "~utils/locale"
 import { StyledSelectButton, StyledSelectContainer } from "./Dictionary.styles"
 
 const DictionarySelector = ({ sourceLangauge, translatedText }: { sourceLangauge: string; translatedText: string }) => {
+  const localRef = React.useRef<HTMLDivElement>(null)
   const { dictionaries } = useDictionaryStore()
-  const { targetLanguage, selectedText } = usePopoverStore()
+  const { targetLanguage, selectedText, setTestRef } = usePopoverStore()
   const { mutate: addMutate, isLoading: addIsLoading, status, data } = useMutation(addDictionaryWord)
   const { isLoggedIn } = useAuthStore()
 
@@ -31,6 +31,17 @@ const DictionarySelector = ({ sourceLangauge, translatedText }: { sourceLangauge
       }
     })
   }
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen
+  })
+
+  const hover = useHover(context)
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([hover])
 
   useEffect(() => {
     if (status === "success") {
@@ -68,17 +79,22 @@ const DictionarySelector = ({ sourceLangauge, translatedText }: { sourceLangauge
     close?.()
   }
 
+  useEffect(() => {
+    if (localRef?.current) {
+      setTestRef(localRef)
+    }
+  }, [localRef])
+
   return (
-    <StatefulPopover
-      showArrow
-      placement="bottom"
-      popoverMargin={5}
-      accessibilityType="tooltip"
-      triggerType="hover"
-      content={({ close }) => (
-        <StyledSelectContainer>
+    <Fragment>
+      <Button ref={refs.setReference} {...getReferenceProps()} isLoading={addIsLoading} disabled={addIsLoading} size="mini">
+        {getLocalMessage("save_to_libraray")}
+        <ChevronDown size={16} />
+      </Button>
+      {isOpen && (
+        <StyledSelectContainer ref={refs.setFloating} {...getFloatingProps()}>
           <StyledSelectButton>Select dictionary</StyledSelectButton>
-          {dictionaries.map((dictionary) => (
+          {dictionaries?.map((dictionary) => (
             <Button
               key={dictionary.id}
               size="mini"
@@ -108,12 +124,7 @@ const DictionarySelector = ({ sourceLangauge, translatedText }: { sourceLangauge
           ))}
         </StyledSelectContainer>
       )}
-      returnFocus>
-      <Button isLoading={addIsLoading} disabled={addIsLoading} size="mini">
-        {getLocalMessage("save_to_libraray")}
-        <ChevronDown size={16} />
-      </Button>
-    </StatefulPopover>
+    </Fragment>
   )
 }
 

@@ -46,7 +46,7 @@ const SetupPage = () => {
         <SetupHeaderDescription>{getLocalMessage("complete_install_desc")}</SetupHeaderDescription>
       </SetupHeader>
       <SetupForm onSubmit={form.handleSubmit(handleSaveChanges)}>
-        <FormControl error={form.formState?.errors?.targetLanguage?.message} label={getLocalMessage("targetLanguage")} caption={getLocalMessage("targetLanguageDesc")}>
+        <FormControl error={form.formState?.errors?.targetLanguage?.message} label={getLocalMessage("nativeLanguage")} caption={getLocalMessage("nativeLanguageDesc")}>
           <LanguageSelector defaultValue={form.getValues("targetLanguage")} onSelect={(value) => form.setValue("targetLanguage", value.code)} />
         </FormControl>
         <Button size="compact" overrides={{ BaseButton: { style: { width: "100%" } } }} disabled={isLoading} isLoading={isLoading} type="submit">

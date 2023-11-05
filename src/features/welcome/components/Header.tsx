@@ -1,4 +1,4 @@
-import Logo from "data-base64:~assets/logo.png"
+import Logo from "data-base64:~assets/logo-dark.png"
 
 import { Header, HeaderLink } from "./Components.styles"
 import Progressbar from "./Progressbar"

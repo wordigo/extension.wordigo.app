@@ -33,7 +33,7 @@ const Translate = () => {
   const translatorShadowContent = document.querySelector("#wordigo-translate-content")
   const [isOpen, setIsOpen] = useState(false)
 
-  const { isFloating, selectedText, isPopup, setFloating, setPopup, setSelectedText, translateOption } = usePopoverStore()
+  const { isFloating, selectedText, isPopup, setFloating, setPopup, setSelectedText, translateOption, testRef } = usePopoverStore()
 
   const { refs, floatingStyles, context } = useFloating({
     placement: "bottom",
@@ -54,10 +54,7 @@ const Translate = () => {
       const rootTranslatorContainer = document.querySelector<HTMLElement>("#el-translate-container")
 
       const tag = targetElement?.tagName
-
-      if (refs.floating.current?.contains(event.target as Element | null)) {
-        return
-      }
+      console.log("testref", testRef)
 
       if (
         popupContainer?.contains(targetElement) ||
@@ -68,6 +65,10 @@ const Translate = () => {
         tag === "TEXTAREA"
       )
         return
+
+      if (refs.floating.current?.contains(event.target as Element | null)) {
+        return
+      }
 
       setTimeout(() => {
         const selection = window.getSelection()
@@ -89,9 +90,11 @@ const Translate = () => {
             getBoundingClientRect: () => range.getBoundingClientRect(),
             getClientRects: () => range.getClientRects()
           })
-          if (translateOption === translateOptionEnums.translate_button) {
+
+          setFloating(false)
+          setPopup(false)
+          if (translateOption == translateOptionEnums.translate_button) {
             setFloating(true)
-            setPopup(false)
           } else {
             setPopup(true)
           }
@@ -102,26 +105,12 @@ const Translate = () => {
       })
     }
 
-    function handleMouseDown(event: MouseEvent) {
-      if (refs.floating.current?.contains(event.target as Element | null)) {
-        return
-      }
-
-      if (window.getSelection()?.isCollapsed || isFloating || isPopup) {
-        setIsOpen(false)
-        setFloating(false)
-        setPopup(false)
-      }
-    }
-
     window.addEventListener("mouseup", handleMouseUp)
-    window.addEventListener("mousedown", handleMouseDown)
 
     return () => {
       window.removeEventListener("mouseup", handleMouseUp)
-      window.removeEventListener("mousedown", handleMouseDown)
     }
-  }, [refs])
+  }, [refs, translateOption])
 
   return (
     <Fragment>
@@ -135,25 +124,13 @@ const Translate = () => {
 Translate.Layout = () => {
   const { dictionaries, getDictionaries } = useDictionaryStore()
   const [mounted, setMounted] = useState(false)
-  const { targetLanguage, setTargetLanguage, setTranslateOption } = usePopoverStore()
+  const { setTargetLanguage, setTranslateOption } = usePopoverStore()
   const { setToken } = useAuthStore()
-
-  localStorage.watch({
-    [WORDIGO_JWT_TOKEN_COOKIE]: (state) => {
-      setToken(state.newValue)
-    },
-    [TRANSLATE_OPTION_STORAGE]: (state) => {
-      setTranslateOption(state.newValue)
-    },
-    [TARGET_LANGUAGE_STORAGE]: (state) => {
-      setTargetLanguage(state.newValue)
-    }
-  })
 
   const getStorages = async () => {
     const tokenStorage = await localStorage.get(WORDIGO_JWT_TOKEN_COOKIE)
-    const targetLanguage = await localStorage.get(TARGET_LANGUAGE_STORAGE)
     const translateOption = await localStorage.get(TRANSLATE_OPTION_STORAGE)
+    const targetLanguage = await localStorage.get(TARGET_LANGUAGE_STORAGE)
 
     setToken(tokenStorage)
     setTargetLanguage(targetLanguage)
@@ -167,6 +144,22 @@ Translate.Layout = () => {
       }
     }
   }
+
+  useEffect(() => {
+    localStorage.watch({
+      [WORDIGO_JWT_TOKEN_COOKIE]: (state) => {
+        setToken(state.newValue)
+      },
+      [TRANSLATE_OPTION_STORAGE]: (state) => {
+        setTranslateOption(state.newValue)
+      },
+      [TARGET_LANGUAGE_STORAGE]: (state) => {
+        setTargetLanguage(state.newValue)
+      }
+    })
+
+    return () => localStorage.unwatchAll()
+  }, [])
 
   useEffect(() => {
     void getStorages()
