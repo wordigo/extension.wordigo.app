@@ -3,9 +3,10 @@ import { FloatingRouteMarker } from "baseui/map-marker"
 import { Skeleton } from "baseui/skeleton"
 import { Textarea } from "baseui/textarea"
 import { colors } from "baseui/tokens"
-import { ArrowRightLeft, Settings, X } from "lucide-react"
+import { ArrowRightLeft, GripVertical, Settings, X } from "lucide-react"
 import { type ComponentPropsWithoutRef, Fragment, forwardRef, useEffect, useMemo } from "react"
 import ReactCountryFlag from "react-country-flag"
+import Draggable from "react-draggable"
 import { useMutation } from "react-query"
 
 import { sendToBackground } from "@plasmohq/messaging"
@@ -25,7 +26,9 @@ import {
   StyledContainer,
   StyledContainerBody,
   StyledContainerHeader,
+  StyledContainerWrapper,
   StyledContentActions,
+  StyledDraggableSidebar,
   StyledHeader,
   StyledHeaderTitle,
   StyledLanguageButton,
@@ -58,86 +61,104 @@ const TranslatePopup = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div"
     window.open("https://wordigo.app/", "_blank")
   }
 
+  const calculateRows = useMemo(() => {
+    const minRows = 4
+    return selectedText ? Math.max(minRows, Math.ceil(selectedText.length / 50)) : minRows
+  }, [selectedText])
+
   return (
-    <MotionCard
+    <div
       ref={ref}
       tabIndex={500}
       id="el-popup-container"
       style={{
-        width: "400px",
-        height: "200px",
+        width: "420px",
         ...style
-      }}
-      initial={{
-        marginTop: 0
-      }}
-      animate={{
-        marginTop: 15
       }}>
-      <FloatingRouteMarker
-        anchorPosition="top-center"
-        overrides={{ Root: { style: { background: "transparent", padding: "0px", width: "100% !important;" } } }}
-        label={
-          <StyledContainer>
-            <StyledContainerHeader>
-              <StyledHeader>
-                <StyledLogo onClick={handleLandingNavigate} />
-                <StyledHeaderTitle>{getLocalMessage("translate")}</StyledHeaderTitle>
-              </StyledHeader>
-              <StyledHeader>
-                <StyledLanguageButton size="mini" kind="secondary">
-                  {isLoading || !getSourceLanguageFlag ? <CSkeleton width="16px" height="16px" animation /> : <PopupCountryFlag countryCode={getSourceLanguageFlag?.icon} />}
-                  <ArrowRightLeft color={colors.gray400} size={10} />
-                  <PopupCountryFlag countryCode={getTargetLanguageFlag?.icon} />
-                </StyledLanguageButton>
-                <Button onClick={handleClose} kind="tertiary" size="mini">
-                  <X size={16} />
-                </Button>
-              </StyledHeader>
-            </StyledContainerHeader>
-            <StyledContainerBody>
-              <div style={{ position: "relative", width: "100%" }}>
-                {isLoading ? (
-                  <TranslatePopupLoader />
-                ) : (
-                  <Fragment>
-                    <Textarea
-                      rows={5}
-                      overrides={{
-                        InputContainer: { style: ({ $theme }) => ({ background: $theme.name === "dark-theme" ? $theme.colors.black : $theme.colors.white }) },
-                        Root: {
-                          style: {
-                            borderRadius: "2px",
-                            borderWidth: "1px",
-                            ":focus-within": {
-                              boxShadow: "none",
-                              borderColor: "rgb(209 213 219/0.8)"
-                            }
-                          }
-                        }
-                      }}
-                      value={result?.data?.translatedText}
-                      readOnly
-                      size="compact"
-                      clearable
-                      clearOnEscape
-                    />
-                    <StyledContentActions>
-                      <AuidoPlayer message={selectedText} />
-                      <TextCopy text={result?.data?.translatedText} />
-                    </StyledContentActions>
-                  </Fragment>
-                )}
-              </div>
-            </StyledContainerBody>
-            <StyledPopupFooter>
-              <SettingsAction />
-              <SaveDictionaryWord translatedText={result?.data?.translatedText} sourceLangauge={result?.data?.sourceLanguage} />
-            </StyledPopupFooter>
-          </StyledContainer>
-        }
-      />
-    </MotionCard>
+      <Draggable handle="strong" bounds="body">
+        <MotionCard
+          style={{
+            width: "420px",
+            height: "240px",
+            ...style
+          }}
+          initial={{
+            marginTop: 0
+          }}
+          animate={{
+            marginTop: 15
+          }}>
+          <FloatingRouteMarker
+            anchorPosition="top-center"
+            overrides={{ Root: { style: { background: "transparent", padding: "0px", width: "100% !important;" } } }}
+            label={
+              <StyledContainerWrapper className="box">
+                <StyledDraggableSidebar className="cursor">
+                  <GripVertical size={14} />
+                </StyledDraggableSidebar>
+                <StyledContainer className="box">
+                  <StyledContainerHeader>
+                    <StyledHeader>
+                      <StyledLogo onClick={handleLandingNavigate} />
+                      <StyledHeaderTitle>{getLocalMessage("translate")}</StyledHeaderTitle>
+                    </StyledHeader>
+                    <StyledHeader>
+                      <StyledLanguageButton size="mini" kind="secondary">
+                        {isLoading || !getSourceLanguageFlag ? <CSkeleton width="16px" height="16px" animation /> : <PopupCountryFlag countryCode={getSourceLanguageFlag?.icon} />}
+                        <ArrowRightLeft color={colors.gray400} size={10} />
+                        <PopupCountryFlag countryCode={getTargetLanguageFlag?.icon} />
+                      </StyledLanguageButton>
+                      <Button onClick={handleClose} kind="tertiary" size="mini">
+                        <X size={16} />
+                      </Button>
+                    </StyledHeader>
+                  </StyledContainerHeader>
+                  <StyledContainerBody>
+                    <div style={{ position: "relative", width: "100%" }}>
+                      {isLoading ? (
+                        <TranslatePopupLoader />
+                      ) : (
+                        <Fragment>
+                          <Textarea
+                            rows={calculateRows}
+                            overrides={{
+                              InputContainer: { style: ({ $theme }) => ({ marginBottom: 10, background: $theme.name === "dark-theme" ? $theme.colors.black : $theme.colors.white }) },
+                              Root: {
+                                style: {
+                                  borderRadius: "2px",
+                                  borderWidth: "1px",
+                                  ":focus-within": {
+                                    boxShadow: "none",
+                                    borderColor: "rgb(209 213 219/0.8)"
+                                  }
+                                }
+                              }
+                            }}
+                            value={result?.data?.translatedText}
+                            readOnly
+                            size="compact"
+                            clearable
+                            clearOnEscape
+                          />
+                          <StyledContentActions>
+                            <AuidoPlayer message={selectedText} />
+                            <TextCopy text={result?.data?.translatedText} />
+                          </StyledContentActions>
+                        </Fragment>
+                      )}
+                    </div>
+                  </StyledContainerBody>
+                  <StyledPopupFooter>
+                    <SettingsAction />
+                    <SaveDictionaryWord translatedText={result?.data?.translatedText} sourceLangauge={result?.data?.sourceLanguage} />
+                  </StyledPopupFooter>
+                </StyledContainer>
+              </StyledContainerWrapper>
+            }
+          />
+        </MotionCard>
+      </Draggable>
+    </div>
   )
 })
 
@@ -163,7 +184,7 @@ const SettingsAction = () => {
 const TranslatePopupLoader = () => {
   return (
     <StyledPopupLoader>
-      <Skeleton rows={2} width="100%" height="60px" animation />
+      <Skeleton rows={2} width="100%" height="35px" animation />
     </StyledPopupLoader>
   )
 }

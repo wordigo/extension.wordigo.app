@@ -7,10 +7,9 @@ import { useForm } from "react-hook-form"
 import type { z } from "zod"
 
 import LanguageSelector from "~features/translate/components/LanguageSelector"
-import { TARGET_LANGUAGE_STORAGE, TRANSLATE_OPTION_STORAGE, translateOptionEnums } from "~utils/constants"
+import { TARGET_LANGUAGE_STORAGE, TEXT_TO_SPEECH_STORAGE, TRANSLATE_OPTION_STORAGE, translateOptionEnums } from "~utils/constants"
 import { getLocalMessage } from "~utils/locale"
-import type { SetupFormSchema } from "~utils/schemas"
-import { SettingsFormSchema } from "~utils/schemas"
+import { SetupFormSchema } from "~utils/schemas"
 import { localStorage } from "~utils/storage"
 
 import { SetupForm, SetupHeader, SetupHeaderDescription, SetupHeaderTitle, SetupLayout } from "./Setup.styles"
@@ -24,7 +23,7 @@ const SetupPage = () => {
     targetLanguage: ""
   }
   const form = useForm<SetupFormValues>({
-    resolver: zodResolver(SettingsFormSchema),
+    resolver: zodResolver(SetupFormSchema),
     defaultValues,
     mode: "onChange"
   })
@@ -33,6 +32,8 @@ const SetupPage = () => {
     setIsLoading(true)
     await localStorage.set(TARGET_LANGUAGE_STORAGE, values.targetLanguage)
     await localStorage.set(TRANSLATE_OPTION_STORAGE, translateOptionEnums.translate_button)
+    await localStorage.set(TEXT_TO_SPEECH_STORAGE, "EN")
+
     setTimeout(() => {
       setIsLoading(false)
       window.close()

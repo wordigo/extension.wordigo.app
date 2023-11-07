@@ -11,6 +11,12 @@
   "complete": {
     "message": "Tamamla"
   },
+  "speechLanguage": {
+    "message": "TTS Dili Seçin"
+},
+"speechLanguageDesc": {
+    "message": "Metni konuşmaya dönüştürme özelliğinin çevrilen metni hangi dilde okumasını istiyorsanız o dili seçin. Bu, konuşulan içeriğin aksanını ve telaffuzunu belirleyecektir."
+},
   "apparanceDesciption": {
     "message": "Uygulamanın görünümünü özelleştirin. Otomatik olarak gece ve gündüz temaları arasında geçiş yapın."
   },

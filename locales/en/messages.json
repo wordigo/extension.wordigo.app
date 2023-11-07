@@ -132,6 +132,12 @@
   "text_to_speech": {
     "message": "Text to speech"
   },
+  "speechLanguage": {
+    "message": "Select TTS Language"
+  },
+  "speechLanguageDesc": {
+    "message": "Choose the language in which you would like the text-to-speech feature to read out the translated text. This will determine the accent and pronunciation of the spoken content."
+  },
   "theme": {
     "message": "Theme"
   },

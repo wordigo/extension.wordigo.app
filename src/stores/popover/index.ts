@@ -7,6 +7,8 @@ export interface IPopoverStore {
   sourceLanguage: string
   translateOption: string
   targetLanguage: string
+  textToSpeech: string
+  setTextToSpeech: (text: string) => Promise<void>
   setFloating: (floating: boolean) => void
   setPopup: (popup: boolean) => void
   setSelectedText: (text: string) => void
@@ -22,7 +24,11 @@ export const usePopoverStore = create<IPopoverStore>((set) => ({
   sourceLanguage: "",
   translateOption: "",
   targetLanguage: "",
+  textToSpeech: "",
 
+  setTextToSpeech: async (text) => {
+    set({ textToSpeech: text })
+  },
   setFloating: (floating) => set({ isFloating: floating }),
   setPopup: (popup) => set({ isPopup: popup }),
   setSelectedText: (text) => set({ selectedText: text }),

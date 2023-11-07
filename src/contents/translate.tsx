@@ -10,7 +10,7 @@ import Provider from "~providers"
 import { useAuthStore } from "~stores/auth"
 import { useDictionaryStore } from "~stores/dictionary"
 import { usePopoverStore } from "~stores/popover"
-import { TARGET_LANGUAGE_STORAGE, TRANSLATE_OPTION_STORAGE, translateOptionEnums } from "~utils/constants"
+import { TARGET_LANGUAGE_STORAGE, TEXT_TO_SPEECH_STORAGE, TRANSLATE_OPTION_STORAGE, translateOptionEnums } from "~utils/constants"
 import { localStorage } from "~utils/storage"
 
 export const config: PlasmoCSConfig = {
@@ -128,17 +128,19 @@ const Translate = () => {
 Translate.Layout = () => {
   const { dictionaries, getDictionaries } = useDictionaryStore()
   const [mounted, setMounted] = useState(false)
-  const { setTargetLanguage, setTranslateOption } = usePopoverStore()
+  const { setTargetLanguage, setTranslateOption, setTextToSpeech } = usePopoverStore()
   const { setToken } = useAuthStore()
 
   const getStorages = async () => {
     const tokenStorage = await localStorage.get(WORDIGO_JWT_TOKEN_COOKIE)
     const translateOption = await localStorage.get(TRANSLATE_OPTION_STORAGE)
+    const textToSpeech = await localStorage.get(TEXT_TO_SPEECH_STORAGE)
     const targetLanguage = await localStorage.get(TARGET_LANGUAGE_STORAGE)
 
     setToken(tokenStorage)
     setTargetLanguage(targetLanguage)
     setTranslateOption(translateOption)
+    setTextToSpeech(textToSpeech)
     setMounted(true)
 
     if (tokenStorage) {
@@ -159,6 +161,9 @@ Translate.Layout = () => {
       },
       [TARGET_LANGUAGE_STORAGE]: (state) => {
         setTargetLanguage(state.newValue)
+      },
+      [TEXT_TO_SPEECH_STORAGE]: (state) => {
+        setTextToSpeech(state.newValue)
       }
     })
 

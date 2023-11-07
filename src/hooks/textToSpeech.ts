@@ -9,22 +9,22 @@ export interface TextToSpeechOptions {
 }
 
 export interface TextToSpeechResult {
-  isLoading: boolean
+  isSpeaking: boolean
   textToSpeech: (text: string) => Promise<void>
 }
 
 export const useTextToSpeech = (): TextToSpeechResult => {
-  const { targetLanguage } = usePopoverStore()
-  const [isLoading, setIsLoading] = useState(false)
+  const { textToSpeech: phonetic } = usePopoverStore()
+  const [isSpeaking, setSpeaking] = useState(false)
 
   const textToSpeech = async (text: string) => {
-    setIsLoading(true)
+    setSpeaking(true)
     try {
       const audioBase64 = await sendToBackground({
         name: "textToSpeech",
         body: {
           text,
-          phonetic: targetLanguage
+          phonetic
         }
       })
 
@@ -32,15 +32,20 @@ export const useTextToSpeech = (): TextToSpeechResult => {
       audio.crossOrigin = "anonymous"
       audio.src = `data:audio/mp3;base64,${audioBase64}`
       audio.play()
+      audio.onplay = () => {
+        setSpeaking(true)
+      }
+      audio.onended = () => {
+        setSpeaking(false)
+      }
     } catch (error) {
       console.error("Error:", error)
     } finally {
-      setIsLoading(false)
     }
   }
 
   return {
-    isLoading,
+    isSpeaking,
     textToSpeech
   }
 }

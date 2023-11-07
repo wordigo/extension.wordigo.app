@@ -8,7 +8,7 @@ import { type z } from "zod"
 
 import LanguageSelector from "~features/translate/components/LanguageSelector"
 import { InfoToast } from "~providers/toaster"
-import { TARGET_LANGUAGE_STORAGE, TRANSLATE_OPTION_STORAGE, translateOptionEnums } from "~utils/constants"
+import { TARGET_LANGUAGE_STORAGE, TEXT_TO_SPEECH_STORAGE, TRANSLATE_OPTION_STORAGE, translateOptionEnums } from "~utils/constants"
 import { getLocalMessage } from "~utils/locale"
 import { SettingsFormSchema } from "~utils/schemas"
 import { localStorage } from "~utils/storage"
@@ -21,6 +21,7 @@ export const SettingsForm = () => {
   const [isLoading, setIsLoading] = useState(true)
   const defaultValues: Partial<SettingsFormValues> = {
     targetLanguage: "",
+    speechLanguage: "",
     select_and_translate: false,
     translate_button: false
   }
@@ -34,12 +35,14 @@ export const SettingsForm = () => {
   const getStatus = async () => {
     const translateOption = await localStorage.get(TRANSLATE_OPTION_STORAGE)
     const targetLanguage = await localStorage.get(TARGET_LANGUAGE_STORAGE)
+    const textToSpeech = await localStorage.get(TEXT_TO_SPEECH_STORAGE)
     if (translateOption === translateOptionEnums.select_and_translate) {
       form.setValue("select_and_translate", true)
     } else {
       form.setValue("translate_button", true)
     }
     form.setValue("targetLanguage", targetLanguage as never)
+    form.setValue("speechLanguage", textToSpeech as never)
     setIsLoading(false)
   }
 
@@ -52,6 +55,7 @@ export const SettingsForm = () => {
 
     await localStorage.set(TRANSLATE_OPTION_STORAGE, convertStatusEnum)
     await localStorage.set(TARGET_LANGUAGE_STORAGE, values.targetLanguage)
+    await localStorage.set(TEXT_TO_SPEECH_STORAGE, values.speechLanguage)
 
     toast(<InfoToast title={getLocalMessage("successNotifyTitle")} description={getLocalMessage("successNotifyDesc")} />)
   }
@@ -70,6 +74,15 @@ export const SettingsForm = () => {
             defaultValue={form.getValues("targetLanguage")}
             onSelect={(value) => {
               form.setValue("targetLanguage", value.code)
+              handleSaveChanges(form.getValues())
+            }}
+          />
+        </FormControl>
+        <FormControl label={getLocalMessage("speechLanguage")} caption={getLocalMessage("speechLanguageDesc")}>
+          <LanguageSelector
+            defaultValue={form.getValues("speechLanguage")}
+            onSelect={(value) => {
+              form.setValue("speechLanguage", value.code)
               handleSaveChanges(form.getValues())
             }}
           />

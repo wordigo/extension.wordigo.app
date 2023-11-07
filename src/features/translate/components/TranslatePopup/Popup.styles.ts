@@ -8,28 +8,44 @@ import Logo from "../Logo"
 
 export const MotionCard = styled(motion.div, () => ({
   position: "absolute",
-  cursor: "pointer",
-  zIndex: 50
+  zIndex: 50,
+  height: "100%"
+}))
+
+export const StyledContainerWrapper = styled("div", ({ $theme }) => ({
+  display: "flex",
+  height: "100%",
+  boxShadow: $theme.name === "dark-theme" ? $theme.lighting.shadow600 : $theme.lighting.shadow400,
+  borderRadius: $theme.sizing.scale100
+}))
+
+export const StyledDraggableSidebar = styled("strong", ({ $theme }) => ({
+  width: "20px",
+  height: "100% !important",
+  zIndex: 999,
+  cursor: "all-scroll",
+  display: "flex",
+  backgroundColor: $theme.name === "dark-theme" ? $theme.colors.backgroundTertiary : $theme.colors.backgroundPrimary,
+  alignItems: "center",
+  justifyContent: "center"
 }))
 
 export const StyledContainer = styled("div", ({ $theme }) => ({
+  flex: 1,
   border: `1px solid ${colors.gray200}`,
-  boxShadow: $theme.name === "dark-theme" ? $theme.lighting.shadow600 : $theme.lighting.shadow400,
-  borderRadius: $theme.sizing.scale100,
   backgroundColor: $theme.name === "dark-theme" ? $theme.colors.backgroundTertiary : $theme.colors.backgroundPrimary,
   color: $theme.colors.contentPrimary,
-  position: "absolute",
-  zIndex: -500,
+  zIndex: 5000,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  cursor: "pointer",
   transition: "all 0.2s ease",
   flexDirection: "column",
   paddingTop: $theme.sizing.scale300,
   paddingBottom: $theme.sizing.scale100,
   paddingLeft: $theme.sizing.scale400,
   paddingRight: $theme.sizing.scale400,
+  borderLeftWidth: "0.5px",
   width: "100% !important"
 }))
 
@@ -97,7 +113,7 @@ export const StyledPopupLoader = styled("div", ({ $theme }) => ({
   gap: $theme.sizing.scale200,
   padding: $theme.sizing.scale300,
   flexDirection: "column",
-  height: "92px"
+  height: "85px"
 }))
 
 // w-full flex items-center justify-between

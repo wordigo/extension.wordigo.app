@@ -6,7 +6,7 @@ import { useTextToSpeech } from "~hooks/textToSpeech"
 import { getLocalMessage } from "~utils/locale"
 
 const AuidoPlayer = ({ message }: { message: string }) => {
-  const { textToSpeech } = useTextToSpeech()
+  const { isSpeaking, textToSpeech } = useTextToSpeech()
   const handleTextToSpeech = () => {
     void textToSpeech(message)
   }
@@ -14,7 +14,7 @@ const AuidoPlayer = ({ message }: { message: string }) => {
   return (
     <div>
       <CTooltip content={getLocalMessage("text_to_speech")}>
-        <Button onClick={handleTextToSpeech} kind="tertiary" size="mini">
+        <Button disabled={isSpeaking} onClick={handleTextToSpeech} kind="tertiary" size="mini">
           <Volume2 size={16} />
         </Button>
       </CTooltip>
