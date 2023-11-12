@@ -4,6 +4,9 @@ import { localStorage } from "~utils/storage"
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
     openWelcomePage()
+
+    chrome.runtime.setUninstallURL(process.env.PLASMO_PUBLIC_FEEDBACK_URL)
+
     return
   }
 })

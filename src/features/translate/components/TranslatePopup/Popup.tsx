@@ -75,7 +75,7 @@ const TranslatePopup = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div"
         width: "420px",
         ...style
       }}>
-      <Draggable handle="strong" bounds="body">
+      <Draggable handle="strong">
         <MotionCard
           style={{
             width: "420px",
