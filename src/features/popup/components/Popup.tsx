@@ -37,7 +37,14 @@ const ExtensionPopup = () => {
     })
   }
 
+  const [mounted, setMounted] = useState(false)
+
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
     const typingTimeout = setTimeout(() => {
       handleTranslate({ query: value, sourceLanguage: null, targetLanguage: targetLanguage.toLowerCase() })
     }, 500)
@@ -86,8 +93,6 @@ ExtensionPopup.Textarea = ({
   readOnly?: boolean
   placeholder?: string
 }) => {
-  const { targetLanguage } = usePopoverStore()
-
   return (
     <div style={{ position: "relative", width: "100%" }}>
       <Textarea

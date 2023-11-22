@@ -34,6 +34,13 @@ const LanguageSelector = ({ defaultValue, onSelect, detectLanguage, placeholder,
     setSelected(computedDefaultValue)
   }, [])
 
+  useEffect(() => {
+    if (defaultValue) {
+      const computedDefaultValue = computedLanguages.find((lang) => lang.code === defaultValue)
+      setSelected(computedDefaultValue)
+    }
+  }, [defaultValue])
+
   const computedPlaceholder = !selected?.value && selected?.name ? "" : getLocalMessage("select_language")
 
   return (
