@@ -20,12 +20,14 @@ import { localStorage } from "~utils/storage"
 
 import "~/styles/main.css"
 
+import { AllCountryLanguages } from "~constants"
 import AuidoPlayer from "~features/translate/components/AudioPlayer"
 
-import { Card, CardActions, CardContent, CardHeader, CardHeaderContent, CardHeaderContentText, SelectCustomOverrides, StyledPopupLoader } from "./Popup.styles"
+import { Card, CardActions, CardContent, CardHeader, CardHeaderContent, CardHeaderContentText, SelectCustomOverrides, StyledLanguageDirection, StyledPopupLoader } from "./Popup.styles"
 
 const ExtensionPopup = () => {
   const [value, setValue] = useState("")
+  const [sourceLanguage, setSourceLanguage] = useState(null)
   const { targetLanguage: defaultTargetLanguage } = usePopoverStore()
   const [targetLanguage, setTargetLanguage] = useState(defaultTargetLanguage)
 
@@ -56,6 +58,15 @@ const ExtensionPopup = () => {
     window.open("https://wordigo.app/", "_blank")
   }
 
+  const handleChangeDirection = () => {
+    if (sourceLanguage === null) return
+    setTargetLanguage(sourceLanguage)
+    setSourceLanguage(targetLanguage)
+  }
+
+  const getSourceLang = AllCountryLanguages.find((lang) => lang.code === sourceLanguage)
+  const getTargetLang = AllCountryLanguages.find((lang) => lang.code === targetLanguage)
+
   return (
     <Card>
       <CardHeader>
@@ -68,9 +79,17 @@ const ExtensionPopup = () => {
           </CardHeaderContentText>
         </CardHeaderContent>
         <CardActions>
-          <LanguageSelector defaultValue={result?.data?.sourceLanguage?.toUpperCase()} overrides={SelectCustomOverrides} detectLanguage={getLocalMessage("detect_language")} />
-          <ArrowRightLeft style={{ color: "rgb(209 213 219/0.8)", marginLeft: 15, marginRight: 15 }} size={22} />
-          <LanguageSelector defaultValue={targetLanguage} onSelect={(lang) => setTargetLanguage(lang.code)} overrides={SelectCustomOverrides} />
+          <LanguageSelector
+            searchable={false}
+            defaultValue={getSourceLang?.code as never}
+            onSelect={(lang) => setSourceLanguage(lang.code)}
+            overrides={SelectCustomOverrides}
+            detectLanguage={getLocalMessage("detect_language")}
+          />
+          <StyledLanguageDirection onClick={handleChangeDirection}>
+            <ArrowRightLeft size={20} />
+          </StyledLanguageDirection>
+          <LanguageSelector searchable={false} defaultValue={getTargetLang?.code as never} onSelect={(lang) => setTargetLanguage(lang.code)} overrides={SelectCustomOverrides} />
         </CardActions>
       </CardHeader>
       <CardContent>

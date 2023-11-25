@@ -19,7 +19,7 @@ export const StyledContainerWrapper = styled("div", ({ $theme }) => ({
   borderRadius: $theme.sizing.scale100
 }))
 
-export const StyledDraggableSidebar = styled("strong", ({ $theme }) => ({
+export const StyledDraggableSidebar = styled("div", ({ $theme }) => ({
   width: "20px",
   height: "100% !important",
   zIndex: 999,

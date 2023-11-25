@@ -77,6 +77,20 @@ export const CardActions = styled("div", ({ $theme }) => ({
   marginTop: "8px"
 }))
 
+export const StyledLanguageDirection = styled("div", ({ $theme }) => ({
+  color: colors.gray100,
+  marginLeft: "15px",
+  marginRight: "15px",
+  display: "flex",
+  alignItems: "center",
+  justifyItems: "center",
+  cursor: "pointer",
+  transition: "all 0.3s ease",
+  ":hover": {
+    color: `${colors.gray200} !important`
+  }
+}))
+
 // absolute right-10 top-3 left-3 flex flex-col gap-y-2
 export const StyledPopupLoader = styled("div", ({ $theme }) => ({
   padding: "10px",

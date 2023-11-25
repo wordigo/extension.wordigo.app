@@ -38,6 +38,7 @@ const Translate = () => {
   const { refs, floatingStyles, context } = useFloating({
     placement: "bottom",
     open: isOpen,
+    strategy: "fixed",
     onOpenChange: setIsOpen,
     middleware: [inline(), flip(), shift()],
     whileElementsMounted: autoUpdate

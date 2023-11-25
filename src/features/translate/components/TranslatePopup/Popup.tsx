@@ -75,7 +75,7 @@ const TranslatePopup = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div"
         width: "420px",
         ...style
       }}>
-      <Draggable handle="strong">
+      <Draggable handle=".draggable">
         <MotionCard
           style={{
             width: "420px",
@@ -93,7 +93,7 @@ const TranslatePopup = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<"div"
             overrides={{ Root: { style: { background: "transparent", padding: "0px", width: "100% !important;" } } }}
             label={
               <StyledContainerWrapper className="box">
-                <StyledDraggableSidebar className="cursor">
+                <StyledDraggableSidebar className="cursor draggable">
                   <GripVertical size={14} />
                 </StyledDraggableSidebar>
                 <StyledContainer className="box">
