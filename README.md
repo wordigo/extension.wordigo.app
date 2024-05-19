@@ -1,33 +1,47 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+# Wordigo Chrome Extension
 
-## Getting Started
+## Overview
 
-First, run the development server:
+The Wordigo Chrome Extension enhances your language learning experience by allowing you to:
+- **Translate Selected Text**: Quickly translate any text you highlight.
+- **Personal Dictionary**: Add words to your own dictionary for future reference.
+- **Pronunciation**: Listen to the correct pronunciation of words.
 
-```bash
-pnpm dev
-# or
-npm run dev
-```
+## Features
 
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
+- **Quick Translations**: Translate text instantly as you browse.
+- **Custom Dictionaries**: Create and manage personalized dictionaries.
+- **Shareable Dictionaries**: Share your dictionaries with friends or colleagues.
+- **Pronunciation Guide**: Hear how words are pronounced to improve your speaking skills.
 
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
+## Installation
 
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/wordigo/extension.wordigo.app.git
+   cd extension.wordigo.app```
 
-## Making production build
+2. **Load the Extension in Chrome**:
+Open Chrome and navigate to chrome://extensions/.
+Enable "Developer mode" in the top right corner.
+Click "Load unpacked" and select the extension.wordigo.app directory.
 
-Run the following:
+## Usage
 
-```bash
-pnpm build
-# or
-npm run build
-```
+1. **Select Text**: Highlight any text on a webpage.
+2. **Translate**: Click the Wordigo icon in the Chrome toolbar to see the translation.
+3. **Add to Dictionary**: Save the word to your personal dictionary for future review.
+4. **Listen**: Click the pronunciation button to hear the word spoken aloud.
 
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
+## Contributors
 
-## Submit to the webstores
+Thank you for your contributions! We appreciate all the contributions from the community.
 
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+<a href="https://github.com/wordigo/extension.wordigo.app/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=wordigo/extension.wordigo.app" />
+</a>
+
+
+## Contact
+
+For questions or feedback, please reach out to us at [support@wordigo.app](mailto:support@wordigo.app).
