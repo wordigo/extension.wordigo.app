@@ -17,15 +17,17 @@ The Wordigo Chrome Extension enhances your language learning experience by allow
 ## Installation
 
 1. **Clone the Repository**:
+
 ```bash
-   git clone https://github.com/wordigo/extension.wordigo.app.git
-   cd extension.wordigo.app
+git clone https://github.com/wordigo/extension.wordigo.app.git
+cd extension.wordigo.app
 ```
 
 2. **Load the Extension in Chrome**:
-Open Chrome and navigate to chrome://extensions/.
-Enable "Developer mode" in the top right corner.
-Click "Load unpacked" and select the extension.wordigo.app directory.
+
+- Open Chrome and navigate to `chrome://extensions/.`
+- Enable "Developer mode" in the top right corner.
+- Click "Load unpacked" and select the extension.wordigo.app directory.
 
 ## Usage
 
