@@ -17,9 +17,10 @@ The Wordigo Chrome Extension enhances your language learning experience by allow
 ## Installation
 
 1. **Clone the Repository**:
-   ```bash
+```bash
    git clone https://github.com/wordigo/extension.wordigo.app.git
-   cd extension.wordigo.app```
+   cd extension.wordigo.app
+```
 
 2. **Load the Extension in Chrome**:
 Open Chrome and navigate to chrome://extensions/.
