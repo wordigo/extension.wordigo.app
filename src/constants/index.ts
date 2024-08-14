@@ -28,6 +28,7 @@ export const SupportedLanguages: ILanguage[] = [
 export const AllCountryLanguages: ILanguage[] = [
   { name: "English", icon: "US", code: "EN" },
   { name: "Turkish", icon: "TR", code: "TR" },
+  { name: "Persian", icon: "IR", code: "FA" },
   { name: "Spanish", icon: "ES", code: "ES" },
   { name: "French", icon: "FR", code: "FR" },
   { name: "German", icon: "DE", code: "DE" },
@@ -59,7 +60,7 @@ export const AllCountryLanguages: ILanguage[] = [
   { name: "Hebrew", icon: "IL", code: "HE" },
   { name: "Hindi", icon: "IN", code: "HI" },
   { name: "Bengali", icon: "BD", code: "BN" },
-  { name: "Tagalog", icon: "PH", code: "TL" }
+  { name: "Tagalog", icon: "PH", code: "TL" },
 ]
 
 export const AllLanguagesWithDetect: ILanguage[] = [{ name: "Detect Language", icon: "DT", code: "DT" }, ...AllCountryLanguages]
